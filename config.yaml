@@ -1,33 +1,33 @@
-# your domain
-domain: example.com
-port:                 # default 12580
-
-# source list file
+# 你的域名，部署到自建服务器，请填写您的服务器IP或域名。proxypool目前不支持ssl，这意味着proxypool运行的端口无法直接使用https。您可以通过查看使用nginx反向代理开启https的示例。
+domain: www.yugogogo.ml 
+port:                 # proxypool运行的端口，默认值为12580。如果设置有环境变量$PORT，以环境变量优先。
+ 
+# source list file  订阅源文件列表,项目内source文件位于config/source.yaml。您可以查看示例链接，以添加更多同类的订阅源。可以添加多个source文件，支持同时使用远程的source文件与本地source文件。
 source-files:
   # use local file
   - ./source.yaml
   # use web file
   # - https://example.com/config/source.yaml
-
+ 
 # ======= 可选项，留空使用default值  =======
-
+ 
 # postgresql database info
-database_url: ""
-
+database_url: ""      #连接postgresql数据库的链接。没有数据库不影响程序的基本运行。若使用VPS，需要安装postgresql，自建用户和数据库。postgresql采用链接的方式连接数据库，需要将链接填入database_url
+ 
 # interval between each crawling
-crawl-interval:       # v0.5.x default 60 (minutes)
+crawl-interval:       # 执行抓取节点任务的时间间隔，默认值为60，单位为分钟
 crontime:             # v0.4.x default 60 (minutes). Deprecated in the newest version
-
+ 
 # speed test
-speedtest: false      # default false. Warning: this will consume large network resources.
-speedtest-interval:   # default 720 (min)
-connection:           # default 5. The number of speed test connections simultaneously
-timeout:              # default 10 (seconds).
+speedtest: true      # 测速功能开关，默认值为false。由于测速会消耗大量流量。默认关闭此功能。需要请设置为true
+speedtest-interval:   # 执行测速任务的时间间隔，默认为720，单位为分钟。
+connection:           # 测速并发连接数，默认值为5
+timeout:              # 单个节点测速时间限制，默认值为10，单位为秒。超过此时间限制的节点会测速失败。若您的服务器带宽不足以承受并发导致失败次数过多，请减少connection，或增加timeout。
 ## active proxy speed test
-active-interval:      # default 60 (min)
-active-frequency:     # default 100 (requests per interval)
-active-max-number:    # default 100. If more than this number of active proxies, the extra will be deprecated by speed
-
+active-interval:      # 执行活跃节点测速任务的时间间隔，默认值为60，单位为分钟。
+active-frequency:     #  活跃节点最低频率，默认值为100次/interval。即每个active-interval内被请求的次数超过此选项的节点被判定为活跃节点。
+active-max-number:    # 最大活跃节点数，默认值为100。若活跃节点超过该选项，将会依照节点速度排序，丢弃多余的节点。此项用于减少服务器流量消耗。
+ 
 # cloudflare api
 cf_email: ""
 cf_key: ""
